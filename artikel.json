@@ -1,0 +1,52 @@
+[
+    {
+        "id": 1,
+        "penulis": "Ahmad Sahroni",
+        "tanggal": "20 Mar 2026",
+        "judul": "Adab Sebelum Ilmu: Pondasi Utama Santri",
+        "ringkasan": "Dalam tradisi pesantren, adab menempati posisi yang...",
+        "kategori": "Opini",
+        "gambar": "static/ilustrasi.jpg",
+        "isi": "<p>Dalam tradisi pesantren, adab menempati posisi yang jauh lebih tinggi daripada sekadar tumpukan informasi atau teori. Menuntut ilmu bukan hanya tentang mengisi pikiran dengan wawasan, melainkan tentang membentuk jiwa yang tunduk dan penuh kerendahan hati. Seorang santri yang mengedepankan adab akan lebih mudah menyerap ilmu karena hatinya telah dibersihkan dari kesombongan, menjadikannya wadah yang siap menerima cahaya hikmah dari guru-gurunya.<br><br>Adab merupakan kunci pembuka pintu keberkahan dalam proses belajar. Tanpa pondasi adab yang kuat, ilmu yang diperoleh cenderung kering dan tidak membawa manfaat bagi diri sendiri maupun lingkungan sekitar. Dengan menghormati guru, menjaga lisan, dan memuliakan majelis ilmu, seorang santri sebenarnya sedang menanam benih kesiapan batin. Ilmu yang didasari oleh ketawadhuan akan tumbuh menjadi amal nyata yang membawa kemaslahatan bagi umat.<br><br>Di balik setiap keberhasilan seorang santri, selalu ada ketaatan yang tulus kepada gurunya. Hubungan antara guru dan murid bukan sekadar hubungan pengajar dan pembelajar, melainkan ikatan spiritual yang mengalirkan keberkahan (barakah). Adab kepada guru adalah bentuk penghormatan terhadap ilmu itu sendiri; ketika seorang santri menjaga etika di hadapan gurunya, ia sedang memuliakan apa yang diajarkan, yang pada gilirannya akan mempermudah jalan baginya untuk memahami rumitnya disiplin ilmu.<br><br>Pada akhirnya, tujuan utama dari menuntut ilmu adalah untuk membentuk pribadi yang berakhlakul karimah. Pondasi adab yang kokoh akan membentengi santri agar tidak tergelincir pada sifat tinggi hati saat ilmunya bertambah luas. Ketika adab telah mendarah daging, ilmu yang didapat justru akan semakin menuntun santri untuk lebih takut kepada Sang Pencipta dan lebih peduli kepada sesama, menjadikannya sosok yang berilmu amaliah dan beramal ilmiah.</p>"
+    },
+    {
+        "id": 2,
+        "penulis": "Siti Maryam",
+        "tanggal": "21 Mar 2026",
+        "judul": "Sejarah Perjuangan Ulama Nusantara: Meneladani Semangat Juang di Era Modern",
+        "ringkasan": "Sejarah Islam di Nusantara tidak terlepas dari dedikasi luar...",
+        "kategori": "Sejarah",
+        "gambar": "static/santri.jpg",
+        "isi": "<p>Sejarah Islam di Nusantara tidak terlepas dari dedikasi luar biasa para ulama yang menjadi pelita di tengah kegelapan kolonialisme. Mereka tidak hanya berperan sebagai penyebar risalah agama, tetapi juga sebagai motor penggerak perlawanan rakyat melawan penjajahan. Dengan kedalaman ilmu dan ketajaman strategi, para ulama mampu menyatukan berbagai lapisan masyarakat di bawah panji tauhid dan cinta tanah air. Meneladani perjuangan mereka berarti memahami bahwa semangat keagamaan dan nasionalisme adalah dua sisi mata uang yang tidak bisa dipisahkan. <br><br>Kegigihan ulama Nusantara terpancar dari cara mereka mendirikan pesantren sebagai benteng pertahanan mental dan intelektual. Di lembaga-lembaga inilah, nilai-nilai kemandirian dan keberanian ditanamkan kepada para santri agar tidak tunduk pada penindasan. Para ulama mengajarkan bahwa kemerdekaan hakiki dimulai dari kemerdekaan berpikir dan ketundukan total hanya kepada Sang Pencipta. Warisan berupa institusi pendidikan ini menjadi bukti nyata bahwa perjuangan mereka bersifat jangka panjang, melintasi batas zaman dan generasi. <br><br>Selain di medan pertempuran fisik, para ulama juga berjuang melalui goresan pena dan pemikiran yang mendalam. Kitab-kitab yang mereka susun menjadi panduan moral sekaligus inspirasi bagi masyarakat untuk tetap teguh memegang prinsip di tengah gempuran budaya asing yang dibawa penjajah. Kesantunan dalam berdakwah namun tegas dalam prinsip keadilan menjadi ciri khas yang patut kita contoh. Ketulusan mereka dalam membela kaum tertindas menunjukkan bahwa ilmu yang mereka miliki benar-benar didedikasikan untuk kemaslahatan umat manusia secara luas. <br><br>Meneladani perjuangan ulama di era modern ini berarti melanjutkan estafet pengabdian mereka dalam menjaga keutuhan bangsa dan keluhuran budi pekerti. Tantangan yang kita hadapi mungkin bukan lagi berupa senjata, melainkan arus informasi dan degradasi moral yang kian nyata. Dengan mengambil semangat juang para pendahulu, kita diingatkan untuk selalu menempatkan ilmu sebagai alat pengabdian, bukan tujuan pribadi. Semoga kita mampu menjaga amanah ilmu dan tanah air ini dengan konsistensi yang sama seperti yang telah ditunjukkan oleh para ulama Nusantara.</p>"
+    },
+    {
+        "id": 3,
+        "penulis": "Rivan Fathur",
+        "tanggal": "19 Mar 2026",
+        "judul": "The Art Of Luxury: Standar Tertinggi Sedan Sultan",
+        "ringkasan": "Lorem Ipsum Dolor Sit Amet...",
+        "kategori": "Opini",
+        "gambar": "static/3.jpg",
+        "isi": "nn"
+    },
+    {
+        "id": 4,
+        "penulis": "Prab Skuy",
+        "tanggal": "1 Feb 2026",
+        "judul": "Investasi Masa Depan: Pentingnya Memantau Tumbuh Kembang Anak",
+        "ringkasan": "Lorem Ipsum Dolor Sit Amet...",
+        "kategori": "Kesehatan",
+        "gambar": "static/2.jpg",
+        "isi": "nn"
+    },
+    {
+        "id": 5,
+        "penulis": "Nama Orang",
+        "tanggal": "26 Mar 2026",
+        "judul": "Formasi Phalanx: 300 Prajurit di Thermopylae",
+        "ringkasan": "Lorem Ipsum Dolor Sit Amet...",
+        "kategori": "Sejarah",
+        "gambar": "static/1.jpg",
+        "isi": "nn"
+    }
+]

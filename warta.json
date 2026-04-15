@@ -1,0 +1,38 @@
+[
+    {
+        "id": "w001",
+        "judul": "Peletakan Batu Pertama Pembangunan Kampus Cabang New York",
+        "tanggal": "20 Maret 2026",
+        "kategori": "Pembangunan",
+        "ringkasan": "Alhamdulillah, prosesi peletakan batu pertama pembangunan gedung asrama baru di Kampus Cabang 01 di New York berjalan khidmat dipimpin langsung oleh pengasuh pondok.",
+        "gambar": "static/bbgg2.png",
+        "link": "baca-warta.html?id=w001"
+    },
+    {
+        "id": "w002",
+        "judul": "Santri Nama Pondok Sabet Juara 1 Lomba Mancing Tingkat Kecamatan",
+        "tanggal": "15 Maret 2026",
+        "kategori": "Prestasi",
+        "ringkasan": "Ananda Ahmad Zaki berhasil mengharumkan nama pesantren setelah meraih juara pertama dalam Lomba Mancing kategori 3 yang diadakan di sungai Mississippi",
+        "gambar": "static/bbgg3.png",
+        "link": "baca-warta.html?id=w002"
+    },
+    {
+        "id": "w003",
+        "judul": "Santri Nama Pondok Mendarat di Merkurius, Siap I'tikaf Akbar di Planet Tersebut",
+        "tanggal": "10 Maret 2026",
+        "kategori": "Kegiatan",
+        "ringkasan": "Pendaftaran program I'tikaf akbar bersama santri dan wali santri kini telah dibuka. Mari maksimalkan ibadah di penghujung planet merkurius tahun ini.",
+        "gambar": "static/bbgg4.png",
+        "link": "baca-warta.html?id=w003"
+    },
+    {
+        "id": "w004",
+        "judul": "Kunjungan Studi Banding dari Taylor Swift",
+        "tanggal": "5 Maret 2026",
+        "kategori": "Kunjungan",
+        "ringkasan": "Kami menyambut hangat kunjungan Taylor Swift dari Pennsylvania untuk saling berbagi pengalaman dalam pengelolaan kurikulum pop & indie folk santri.",
+        "gambar": "static/bbgg5.png",
+        "link": "baca-warta.html?id=w004"
+    }
+]

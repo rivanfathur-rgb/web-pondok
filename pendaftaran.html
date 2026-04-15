@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendaftaran | Nama Pondok</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-white font-sans antialiased">
+<!--=====================
+---- ANIMASI LOADING ----
+=================== -->
+    <div id="loader" class="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden">
+    
+<div id="loader-content" class="relative z-10 flex flex-col items-center opacity-0 transition-opacity duration-1000">
+    <img src="static/logo.png" alt="Logo almamater" class="w-24 h-24 mb-4 drop-shadow-2xl">
+    <div class="text-white text-2xl font-black tracking-[0.2em] uppercase text-center">
+        Nama Pondok
+    </div>
+</div>
+
+    <div id="left-side" class="absolute inset-y-0 left-0 w-1/2 bg-[#064e3b] transition-all duration-1000 ease-in-out"></div>
+
+    <div id="right-side" class="absolute inset-y-0 right-0 w-1/2 bg-[#064e3b] transition-all duration-1000 ease-in-out"></div>
+</div>
+<!-- ========================= -->
+    <div class="min-h-screen flex flex-col items-center justify-center p-6 text-center">
+        
+        <div class="text-6xl mb-6">🚧</div>
+        <h1 class="text-3xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-600 uppercase">
+        Fitur Belum Tersedia
+        </h1>
+
+        <p class="text-slate-400 max-w-md text-lg mb-8 leading-relaxed">
+            Mohon Maaf, Sistem pendaftaran santri baru jalur digital masih dalam tahap pengembangan. 
+            Silahkan hubungi <span class="text-indigo-400 font-bold">Operator Pondok</span> untuk info lebih lanjut.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+            <a href="https://wa.me/628XXXXXXXXXX" class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-xl font-bold transition transform hover:scale-105">
+                Hubungi Operator (WA)
+            </a>
+            
+            <a href="index.html" class="border border-slate-700 hover:bg-slate-800 text-white px-8 py-3 rounded-xl font-bold transition">
+                Kembali ke Beranda
+            </a>
+        </div>
+
+        <footer class="mt-20 text-slate-600 text-sm italic">
+            &copy; 2026 Pondok Modern Nama Pondok - Tech Division
+        </footer>
+    </div>
+<script>
+    window.addEventListener('load', () => {
+        const loader = document.getElementById('loader');
+        const loaderContent = document.getElementById('loader-content');
+        const leftSide = document.getElementById('left-side');
+        const rightSide = document.getElementById('right-side');
+
+        // STEP 1: Munculin Logo & Teks pelan-pelan (Fade In)
+        setTimeout(() => {
+            loaderContent.classList.replace('opacity-0', 'opacity-100');
+            loaderContent.classList.add('animate-pulse'); // Kasih efek kedip setelah muncul
+        }, 100); // Muncul hampir instan tapi halus
+
+        // STEP 2: Tunggu sebentar (Ijo), terus ganti warna ke Slate (Biru)
+        setTimeout(() => {
+            leftSide.classList.replace('bg-[#064e3b]', 'bg-slate-900');
+            rightSide.classList.replace('bg-[#064e3b]', 'bg-slate-900');
+
+            // STEP 3: Proses Fade Out & Buka Pintu
+            setTimeout(() => {
+                // Logo memudar halus (Fade Out)
+                loaderContent.classList.replace('opacity-100', 'opacity-0');
+                loaderContent.classList.remove('animate-pulse');
+                
+                // Pintu kebuka
+                leftSide.classList.add('-translate-x-full');
+                rightSide.classList.add('translate-x-full');
+
+                // STEP 4: Hapus loader dari layar
+                setTimeout(() => {
+                    loader.classList.add('hidden');
+                }, 1000); 
+            }, 800); // Jeda setelah warna berubah biru
+
+        }, 1500); // Durasi pamer warna ijo pondok
+    });
+</script>
+</body>
+</html>
