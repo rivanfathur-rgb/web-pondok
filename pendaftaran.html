@@ -3,89 +3,315 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pendaftaran | Nama Pondok</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Pondok Pesantren Nama Pondok</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body class="bg-slate-900 text-white font-sans antialiased">
-<!--=====================
----- ANIMASI LOADING ----
-=================== -->
-    <div id="loader" class="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden">
-    
-<div id="loader-content" class="relative z-10 flex flex-col items-center opacity-0 transition-opacity duration-1000">
-    <img src="static/logo.png" alt="Logo almamater" class="w-24 h-24 mb-4 drop-shadow-2xl">
-    <div class="text-white text-2xl font-black tracking-[0.2em] uppercase text-center">
-        Nama Pondok
+<body>
+    <!-- buat animasi loading python -m http.server 8000-->
+    <div class="loader-wrapper">
+        <div class="loader-content">
+            <img src="static/logo.png" alt="Logo almamater" class="loader-logo-modern">
+            <div class="loader-text">NAMA PONDOK</div>
+        </div>
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
     </div>
-</div>
+<!-- ==============================
+------ HEADER TOPBAR NAVBAR ------
+================================= -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="contact-info">
+                <span><i class="fas fa-phone"></i> +62 XXX XXXX XXXX</span>
+                <span><i class="fas fa-envelope"></i> info@Nama Pondok.sch.id</span>
+            </div>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="https://www.instagram.com/pesantren_Nama Pondok/"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.youtube.com/@Nama Pondok_id5112"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
 
-    <div id="left-side" class="absolute inset-y-0 left-0 w-1/2 bg-[#064e3b] transition-all duration-1000 ease-in-out"></div>
-
-    <div id="right-side" class="absolute inset-y-0 right-0 w-1/2 bg-[#064e3b] transition-all duration-1000 ease-in-out"></div>
-</div>
-<!-- ========================= -->
-    <div class="min-h-screen flex flex-col items-center justify-center p-6 text-center">
-        
-        <div class="text-6xl mb-6">🚧</div>
-        <h1 class="text-3xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-600 uppercase">
-        Fitur Belum Tersedia
-        </h1>
-
-        <p class="text-slate-400 max-w-md text-lg mb-8 leading-relaxed">
-            Mohon Maaf, Sistem pendaftaran santri baru jalur digital masih dalam tahap pengembangan. 
-            Silahkan hubungi <span class="text-indigo-400 font-bold">Operator Pondok</span> untuk info lebih lanjut.
-        </p>
-
-        <div class="flex flex-col sm:flex-row gap-4">
-            <a href="https://wa.me/628XXXXXXXXXX" class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-xl font-bold transition transform hover:scale-105">
-                Hubungi Operator (WA)
-            </a>
-            
-            <a href="index.html" class="border border-slate-700 hover:bg-slate-800 text-white px-8 py-3 rounded-xl font-bold transition">
-                Kembali ke Beranda
-            </a>
+<header class="header-warta-theme">
+    <nav class="container nav-mobile-wrapper">
+        <div class="menu-toggle" id="mobile-menu">
+            <span class="line"></span>
+            <span class="line"></span>
+            <span class="line"></span>
+        </div>
+        <div class="logo">
+            <img src="static/logo.png" alt="Logo">
         </div>
 
-        <footer class="mt-20 text-slate-600 text-sm italic">
-            &copy; 2026 Pondok Modern Nama Pondok - Tech Division
-        </footer>
+        <div class="search-icon-mobile">
+            <i class="fas fa-search"></i>
+        </div>
+
+        <ul class="nav-links" id="nav-list">
+            <li><a href="index.html">Beranda</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-btn">Tentang <i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown-content">
+                    <li><a href="tentang.html">Profil Pondok</a></li>
+                    <li><a href="sejarah.html">Sejarah Yayasan</a></li>
+                    <li><a href="cabang.html">Kampus Cabang</a></li>
+                </ul>
+            </li>
+            <li><a href="pendidikan.html">Pendidikan</a></li>
+            <li><a href="warta.html">Warta</a></li>
+            <li><a href="pendaftaran.html">Pendaftaran</a></li>
+        </ul>
+    </nav>
+    </header>
+
+<section class="pendaftaran-section">
+    <div class="form-container-rivan">
+        <h2 class="form-title">FORMULIR PENDAFTARAN</h2>
+        <p class="form-subtitle">Silakan lengkapi data calon santri di bawah ini</p>
+
+        <form id="formDaftar" class="form-rivan">
+            <div style="display:none;">
+                <input type="text" name="nisn" id="nisn">
+            </div>
+            <div class="input-row">
+                <div class="input-group">
+                    <label>Nama Lengkap</label>
+                    <input type="text" name="nama" required placeholder="Masukkan nama lengkap">
+                </div>
+                <div class="input-group">
+                    <label>Kelas</label>
+                    <input type="text" name="kelas" required placeholder="Contoh: 7A / 10 IPA">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Alamat Lengkap</label>
+                <textarea name="alamat" required placeholder="Alamat rumah tinggal saat ini"></textarea>
+            </div>
+
+            <div class="input-row">
+                <div class="input-group">
+                    <label>Tanggal Lahir</label>
+                    <input type="date" name="tgl_lahir" required>
+                </div>
+                <div class="input-group">
+                    <label>Tempat Lahir</label>
+                    <input type="text" name="tmp_lahir" required placeholder="Kota kelahiran">
+                </div>
+            </div>
+
+            <div class="input-row">
+                <div class="input-group">
+                    <label>Jenis Kelamin</label>
+                    <select name="gender" required>
+                        <option value="">Pilih...</option>
+                        <option value="Laki-laki">Laki-laki</option>
+                        <option value="Perempuan">Perempuan</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>No. WhatsApp/Kontak</label>
+                    <input type="number" name="kontak" required placeholder="08xxxxxxxxxx">
+                </div>
+            </div>
+
+            <div class="form-action">
+                <button type="submit" id="btnKirim" class="btn-submit">Daftar Sekarang</button>
+                <a href="index.html" class="btn-back">Kembali ke Beranda</a>
+            </div>
+        </form>
     </div>
+</section>
+
+<div id="customModal" class="modal-overlay">
+    <div class="modal-card">
+        <div class="modal-icon warning">❓</div>
+        <h3>Konfirmasi Data</h3>
+        <p>Apakah Anda yakin data yang diisi sudah benar? Silakan teliti kembali sebelum mengirim.</p>
+        <div class="modal-buttons">
+            <button id="modalBatal" class="btn-modal-secondary">Batal</button>
+            <button id="modalYakin" class="btn-modal-primary">Yakin, Kirim</button>
+        </div>
+    </div>
+</div>
+
+<div id="customSuccess" class="modal-overlay">
+    <div class="modal-card">
+        <div class="modal-icon success">✅</div>
+        <h3 class="success-text">Pendaftaran Sukses!</h3>
+        <p>Alhamdulillah, data pendaftaran Anda telah berhasil kami terima.</p>
+        <button id="successOk" class="btn-modal-secondary">Tutup</button>
+    </div>
+</div>
+
+    <!-- ===============
+------ FOOTER ------
+=============== -->
+<footer>
+    <div class="container footer-grid">
+        <div class="footer-col">
+            <h3>Hubungi Kami</h3>
+            <div class="footer-line"></div>
+            <p><i class="fas fa-envelope"></i> info@almamater.sch.id</p>
+            <p><i class="fas fa-phone"></i> +62 XXX XXXX XXXX</p>
+            <p><i class="fas fa-map-marker-alt"></i> Lembah Sungai Tigris, Prapatan Asia Barat, 32°30N 44°30E</p>
+        </div>
+
+        <div class="footer-col">
+            <h3>Link Kami</h3>
+            <div class="footer-line"></div>
+            <ul class="footer-links">
+                <li><a href="syaratnketentuan.html">Syarat & Ketentuan</a></li>
+                <li><a href="kebijakan.html">Kebijakan Kami</a></li>
+                <li><a href="tentang.html">Tentang Kami</a></li>
+                <li><a href="caradonat.html">Cara Donasi</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h3>Pembayaran</h3>
+            <div class="footer-line"></div>
+            <div class="payment-grid">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg" alt="QRIS">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg" alt="BCA">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/ad/Bank_Mandiri_logo_2016.svg" alt="Mandiri">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/Gopay_logo.svg" alt="Gopay">
+            </div>
+        </div>
+
+        <div class="footer-col">
+            <h3>Subscribe</h3>
+            <div class="footer-line"></div>
+            <p>Jangan lupa berlangganan untuk terus mendapatkan informasi terbaru dan konten eksklusif kami.</p>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="https://www.instagram.com/pesantren_Nama Pondok/"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.youtube.com/@Nama Pondok_id5112"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer-bawah">
+        <p>&copy; Semua hak dilindungi 2026 Nama Pondok</p>
+    </div>
+</footer>
+
+<a href="https://wa.me/628XXXXXXXXXX" class="whatsapp-float" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+</a>
+
 <script>
-    window.addEventListener('load', () => {
-        const loader = document.getElementById('loader');
-        const loaderContent = document.getElementById('loader-content');
-        const leftSide = document.getElementById('left-side');
-        const rightSide = document.getElementById('right-side');
-
-        // STEP 1: Munculin Logo & Teks pelan-pelan (Fade In)
+    // 1. --- SCRIPT LOADING (Desain Lu) ---
+    window.addEventListener("load", function() {
+        const loader = document.querySelector(".loader-wrapper");
+        
+        // Kasih waktu logo buat 'napas' bentar
         setTimeout(() => {
-            loaderContent.classList.replace('opacity-0', 'opacity-100');
-            loaderContent.classList.add('animate-pulse'); // Kasih efek kedip setelah muncul
-        }, 100); // Muncul hampir instan tapi halus
-
-        // STEP 2: Tunggu sebentar (Ijo), terus ganti warna ke Slate (Biru)
-        setTimeout(() => {
-            leftSide.classList.replace('bg-[#064e3b]', 'bg-slate-900');
-            rightSide.classList.replace('bg-[#064e3b]', 'bg-slate-900');
-
-            // STEP 3: Proses Fade Out & Buka Pintu
-            setTimeout(() => {
-                // Logo memudar halus (Fade Out)
-                loaderContent.classList.replace('opacity-100', 'opacity-0');
-                loaderContent.classList.remove('animate-pulse');
-                
-                // Pintu kebuka
-                leftSide.classList.add('-translate-x-full');
-                rightSide.classList.add('translate-x-full');
-
-                // STEP 4: Hapus loader dari layar
-                setTimeout(() => {
-                    loader.classList.add('hidden');
-                }, 1000); 
-            }, 800); // Jeda setelah warna berubah biru
-
-        }, 1500); // Durasi pamer warna ijo pondok
+            loader.classList.add("loaded");
+        }, 1200); 
     });
+
+    // 2. --- SCRIPT SISTEM PENDAFTARAN & MODAL ---
+    // GANTI LINK DI BAWAH INI DENGAN URL WEB APP LU
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzXZdHG9jPpAyJmaRjcCObCo1n_dj1DXSoJzcFYrWcnw660hRqIWqwt6nZp6ignySMC_Q/exec'
+    const form = document.getElementById('formDaftar')
+    const btnKirim = document.getElementById('btnKirim')
+    
+    // Element Modal
+    const modal = document.getElementById('customModal');
+    const modalYakin = document.getElementById('modalYakin');
+    const modalBatal = document.getElementById('modalBatal');
+    
+    // Element Notifikasi Sukses
+    const successModal = document.getElementById('customSuccess');
+    const successOk = document.getElementById('successOk');
+
+// KIRIM DATA
+   function kirimData() {
+        modal.classList.remove('modal-active'); 
+        
+        btnKirim.disabled = true;
+        btnKirim.innerText = "⏳ Sedang Memproses...";
+        
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+            .then(response => response.text()) 
+            .then(result => {
+                if (result === "Bot Detected") {
+                    // 1. Ganti total tampilan halaman agar Bot tidak bisa input lagi
+                    document.body.innerHTML = `
+                        <div style="height: 100vh; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #0f172a; color: white; font-family: 'Poppins', sans-serif; text-align: center; position: fixed; top: 0; left: 0; z-index: 9999;">
+                            <div style="background: rgba(255, 0, 0, 0.1); padding: 40px; border-radius: 20px; border: 1px solid #ff4d4d; box-shadow: 0 0 20px rgba(255, 77, 77, 0.2);">
+                                <h1 style="color: #ff4d4d; font-size: 2.5rem; margin-bottom: 10px;">🛡️ BOT DETECTED</h1>
+                                <p style="font-size: 1.1rem; color: #cbd5e1;">Akses Anda telah diblokir demi keamanan sistem.</p>
+                                <p style="margin-top: 20px; font-weight: 300;">Mengalihkan Anda dalam <span id="detik" style="font-weight: bold; color: #ff4d4d; font-size: 1.5rem;">3</span> detik...</p>
+                            </div>
+                        </div>
+                    `;
+
+                    // 2. Jalankan hitung mundur otomatis tanpa perlu klik "OK"
+                    let countdown = 3;
+                    const interval = setInterval(() => {
+                        countdown--;
+                        const detikElement = document.getElementById('detik');
+                        if (detikElement) detikElement.innerText = countdown;
+                        
+                        if (countdown <= 0) {
+                            clearInterval(interval);
+                            window.location.href = "https://www.google.com"; // Mental ke luar
+                        }
+                    }, 1000);
+
+                } else if (result === "Sukses") {
+                    // Logika Sukses untuk Manusia
+                    successModal.classList.remove('hidden');
+                    setTimeout(() => { successModal.classList.add('modal-active'); }, 10);
+                    
+                    form.reset();
+                    btnKirim.disabled = false;
+                    btnKirim.innerText = "Daftar Sekarang";
+                } else {
+                    // Jika ada error teknis dari server
+                    alert("Respon Server: " + result);
+                    btnKirim.disabled = false;
+                    btnKirim.innerText = "Daftar Sekarang";
+                }
+            })
+            .catch(error => {
+                alert("Waduh, koneksi bermasalah!");
+                console.error('Error!', error.message);
+                btnKirim.disabled = false;
+                btnKirim.innerText = "Daftar Sekarang";
+            });
+    }
+
+    // --- LOGIC TOMBOL & SUBMIT ---
+    
+    // A. Saat Form Di-submit
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        // Munculin Modal Konfirmasi Custom
+        modal.classList.add('modal-active');
+    })
+
+    // B. Saat klik "Yakin, Kirim" di Modal
+    modalYakin.addEventListener('click', () => {
+        kirimData();
+    });
+
+    // C. Saat klik "Batal" di Modal
+    modalBatal.addEventListener('click', () => {
+        modal.classList.remove('modal-active');
+    });
+
+    // D. Saat klik "Kembali" di Notifikasi Sukses
+    successOk.addEventListener('click', () => {
+        successModal.classList.remove('modal-active');
+        setTimeout(() => { successModal.classList.add('hidden'); }, 300);
+        // Bisa tambahin redirect ke home di sini: window.location.href = 'index.html';
+    });
+    
 </script>
 </body>
 </html>
