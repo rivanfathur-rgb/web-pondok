@@ -6,6 +6,7 @@
     <title>Pondok Pesantren Nama Pondok</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <!-- buat animasi loading python -m http.server 8000-->
@@ -203,19 +204,19 @@
 </a>
 
 <script>
-    // 1. --- SCRIPT LOADING (Desain Lu) ---
+    // 1. --- SCRIPT LOADING  ---
     window.addEventListener("load", function() {
         const loader = document.querySelector(".loader-wrapper");
         
-        // Kasih waktu logo buat 'napas' bentar
+        // Kasih waktu logo buat diem bentar
         setTimeout(() => {
             loader.classList.add("loaded");
         }, 1200); 
     });
 
     // 2. --- SCRIPT SISTEM PENDAFTARAN & MODAL ---
-    // GANTI LINK DI BAWAH INI DENGAN URL WEB APP LU
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzXZdHG9jPpAyJmaRjcCObCo1n_dj1DXSoJzcFYrWcnw660hRqIWqwt6nZp6ignySMC_Q/exec'
+    // LINK DI BAWAH INI URL WEB APP GOOGLE SHEET TERBARU YANG SUDAH DEPLOY (VERSION: NEW)
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyHRmav_94qs7vglAEBvKEERouJ4V6cajHZsrx2l9I_mfpHlfxWzy1K3K3tWNK7u4R8dA/exec'
     const form = document.getElementById('formDaftar')
     const btnKirim = document.getElementById('btnKirim')
     
@@ -228,63 +229,75 @@
     const successModal = document.getElementById('customSuccess');
     const successOk = document.getElementById('successOk');
 
-// KIRIM DATA
-   function kirimData() {
-        modal.classList.remove('modal-active'); 
-        
-        btnKirim.disabled = true;
-        btnKirim.innerText = "⏳ Sedang Memproses...";
-        
-        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-            .then(response => response.text()) 
-            .then(result => {
-                if (result === "Bot Detected") {
-                    // 1. Ganti total tampilan halaman agar Bot tidak bisa input lagi
-                    document.body.innerHTML = `
-                        <div style="height: 100vh; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #0f172a; color: white; font-family: 'Poppins', sans-serif; text-align: center; position: fixed; top: 0; left: 0; z-index: 9999;">
-                            <div style="background: rgba(255, 0, 0, 0.1); padding: 40px; border-radius: 20px; border: 1px solid #ff4d4d; box-shadow: 0 0 20px rgba(255, 77, 77, 0.2);">
-                                <h1 style="color: #ff4d4d; font-size: 2.5rem; margin-bottom: 10px;">🛡️ BOT DETECTED</h1>
-                                <p style="font-size: 1.1rem; color: #cbd5e1;">Akses Anda telah diblokir demi keamanan sistem.</p>
-                                <p style="margin-top: 20px; font-weight: 300;">Mengalihkan Anda dalam <span id="detik" style="font-weight: bold; color: #ff4d4d; font-size: 1.5rem;">3</span> detik...</p>
-                            </div>
+function kirimData() {
+    modal.classList.remove('modal-active'); 
+    
+    btnKirim.disabled = true;
+    btnKirim.innerText = "⏳ Sedang Memproses...";
+    
+    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => response.text()) 
+        .then(result => {
+            // 1. CEK BOT DETECTION 
+            if (result === "Bot Detected") {
+                document.body.innerHTML = `
+                    <div style="height: 100vh; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #0f172a; color: white; font-family: 'Poppins', sans-serif; text-align: center; position: fixed; top: 0; left: 0; z-index: 9999;">
+                        <div style="background: rgba(255, 0, 0, 0.1); padding: 40px; border-radius: 20px; border: 1px solid #ff4d4d; box-shadow: 0 0 20px rgba(255, 77, 77, 0.2);">
+                            <h1 style="color: #ff4d4d; font-size: 2.5rem; margin-bottom: 10px;">🛡️ BOT DETECTED</h1>
+                            <p style="font-size: 1.1rem; color: #cbd5e1;">Akses Anda telah diblokir demi keamanan sistem.</p>
+                            <p style="margin-top: 20px; font-weight: 300;">Mengalihkan Anda dalam <span id="detik" style="font-weight: bold; color: #ff4d4d; font-size: 1.5rem;">3</span> detik...</p>
                         </div>
-                    `;
+                    </div>
+                `;
+                let countdown = 3;
+                const interval = setInterval(() => {
+                    countdown--;
+                    const detikElement = document.getElementById('detik');
+                    if (detikElement) detikElement.innerText = countdown;
+                    if (countdown <= 0) {
+                        clearInterval(interval);
+                        window.location.href = "https://www.google.com";
+                    }
+                }, 1000);
 
-                    // 2. Jalankan hitung mundur otomatis tanpa perlu klik "OK"
-                    let countdown = 3;
-                    const interval = setInterval(() => {
-                        countdown--;
-                        const detikElement = document.getElementById('detik');
-                        if (detikElement) detikElement.innerText = countdown;
-                        
-                        if (countdown <= 0) {
-                            clearInterval(interval);
-                            window.location.href = "https://www.google.com"; // Mental ke luar
-                        }
-                    }, 1000);
+            } 
+            // 2. CEK DATA DOBEL (Fitur Baru)
+            else if (result === "DUPLICATE_ALL") {
+                Swal.fire({ icon: 'warning', title: 'Santri Sudah Terdaftar', text: 'Data nama dan nomor WhatsApp ini sudah ada di database kami.', confirmButtonColor: '#006644' });
+                resetBtn();
+            } 
+            else if (result === "DUPLICATE_NAME") {
+                Swal.fire({ icon: 'error', title: 'Nama Sudah Ada', text: 'Nama ini sudah terdaftar. Gunakan nama lengkap (tambahkan bin/binti) jika Anda orang yang berbeda.', confirmButtonColor: '#006644' });
+                resetBtn();
+            } 
+            else if (result === "DUPLICATE_CONTACT") {
+                Swal.fire({ icon: 'error', title: 'Nomor WA Terpakai', text: 'Nomor WhatsApp ini sudah terdaftar untuk santri lain.', confirmButtonColor: '#006644' });
+                resetBtn();
+            } 
+            // 3. LOGIKA SUKSES 
+            else if (result === "Sukses") {
+                successModal.classList.remove('hidden');
+                setTimeout(() => { successModal.classList.add('modal-active'); }, 10);
+                form.reset();
+                resetBtn();
+            } 
+            else {
+                alert("Respon Server: " + result);
+                resetBtn();
+            }
+        })
+        .catch(error => {
+            console.dir(error); // Ini bakal kasih detail objek errornya di console
+            alert("Error: " + error.message);
+            resetBtn();
+        });
+}
 
-                } else if (result === "Sukses") {
-                    // Logika Sukses untuk Manusia
-                    successModal.classList.remove('hidden');
-                    setTimeout(() => { successModal.classList.add('modal-active'); }, 10);
-                    
-                    form.reset();
-                    btnKirim.disabled = false;
-                    btnKirim.innerText = "Daftar Sekarang";
-                } else {
-                    // Jika ada error teknis dari server
-                    alert("Respon Server: " + result);
-                    btnKirim.disabled = false;
-                    btnKirim.innerText = "Daftar Sekarang";
-                }
-            })
-            .catch(error => {
-                alert("Waduh, koneksi bermasalah!");
-                console.error('Error!', error.message);
-                btnKirim.disabled = false;
-                btnKirim.innerText = "Daftar Sekarang";
-            });
-    }
+// Fungsi bantu biar gak nulis ulang terus
+function resetBtn() {
+    btnKirim.disabled = false;
+    btnKirim.innerText = "Daftar Sekarang";
+}
 
     // --- LOGIC TOMBOL & SUBMIT ---
     
@@ -311,7 +324,56 @@
         setTimeout(() => { successModal.classList.add('hidden'); }, 300);
         // Bisa tambahin redirect ke home di sini: window.location.href = 'index.html';
     });
-    
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    const dropdownBtn = document.querySelector('.dropdown-btn');
+    const dropdownParent = document.querySelector('.dropdown');
+    // --- TAMBAHAN VARIABEL HEADER ---
+    const header = document.querySelector('header'); 
+
+    // 1. Logika Garis Tiga (Menu Mobile) - SUDAH DIUPDATE
+    if (menuToggle && navLinks) {
+        menuToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Kunci animasinya di sini:
+            header.classList.toggle('nav-active'); 
+            navLinks.classList.toggle('active');
+        });
+    }
+
+    // 2. Logika Dropdown "Tentang" (Tetap)
+    if (dropdownBtn && dropdownParent) {
+        dropdownBtn.addEventListener('click', function(e) {
+            if (window.innerWidth <= 768) {
+                e.preventDefault();
+                e.stopPropagation();
+                dropdownParent.classList.toggle('show');
+            }
+        });
+    }
+
+    // 3. Klik di luar buat nutup (DIPERKETAT)
+    document.addEventListener('click', function(e) {
+        if (navLinks && navLinks.classList.contains('active')) {
+            if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
+                navLinks.classList.remove('active');
+                // hapus class di header pas menu ditutup klik luar
+                header.classList.remove('nav-active'); 
+            }
+        }
+        
+        if (dropdownParent && dropdownParent.classList.contains('show')) {
+            if (!dropdownParent.contains(e.target)) {
+                dropdownParent.classList.remove('show');
+            }
+        }
+    });
+
+});
 </script>
 </body>
 </html>

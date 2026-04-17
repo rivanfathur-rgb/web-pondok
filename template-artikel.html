@@ -97,15 +97,20 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // --- 1. AMBIL DATA DARI URL & JSON ---
+        // 1. KONFIGURASI & AMBIL ID DARI URL
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzxF7Eff3LMw70Eh7Zm0Tec-N_OqK5solJx0UI8XCqVmD3sWxvytlpQGOQXoo0ALGYo/exec';
         const urlParams = new URLSearchParams(window.location.search);
         const idDicari = urlParams.get('id');
 
-        fetch('artikel.json')
+        if (!idDicari) {
+            console.error("ID Artikel tidak ditemukan di URL");
+            return;
+        }
+
+        // 2. AMBIL DETAIL ARTIKEL (Untuk Isi Utama)
+        fetch(`${scriptURL}?action=getDetail&id=${idDicari}`)
             .then(res => res.json())
-            .then(data => {
-                const artikel = data.find(a => a.id == idDicari);
-                
+            .then(artikel => {
                 if(artikel) {
                     document.getElementById('pageTitle').innerText = artikel.judul + " - Nama Pondok";
                     document.getElementById('bigTitle').innerText = artikel.judul;
@@ -114,26 +119,43 @@
                     document.getElementById('articleDate').innerText = artikel.tanggal;
                     document.getElementById('mainImage').src = artikel.gambar;
                     document.getElementById('articleBody').innerHTML = artikel.isi;
-
-                    // Isi Sidebar
-                    const sidebarWadah = document.getElementById('sidebarGrid');
-                    const saranArtikel = data.filter(a => a.id != idDicari).slice(0, 4);
-                    
-                    saranArtikel.forEach(item => {
-                        sidebarWadah.innerHTML += `
-                            <div class="side-card">
-                                <div class="side-card-image">
-                                    <img src="${item.gambar}" alt="Karya Santri">
-                                    <span class="side-tag">${item.kategori}</span>
-                                </div>
-                                <div class="side-card-body">
-                                    <h3>${item.judul}</h3>
-                                    <a href="template-artikel.html?id=${item.id}" class="side-btn">Baca</a>
-                                </div>
-                            </div>`;
-                    });
                 }
-            });
+            })
+            .catch(err => console.error("Gagal muat detail artikel:", err));
+
+        // 3. AMBIL SEMUA ARTIKEL (Untuk Sidebar/Artikel Lainnya)
+        fetch(`${scriptURL}?action=getArticles`)
+            .then(res => res.json())
+            .then(data => {
+                const sidebarWadah = document.getElementById('sidebarGrid');
+                // Filter biar artikel yang lagi dibaca gak muncul di sidebar, ambil 4 aja
+                const saranArtikel = data.filter(a => a.id != idDicari).slice(0, 4);
+                
+                let htmlSidebar = "";
+                saranArtikel.forEach(item => {
+                    htmlSidebar += `
+                        <div class="side-card">
+                            <div class="side-card-image">
+                                <img src="${item.gambar}" alt="Karya Santri">
+                                <span class="side-tag">${item.kategori}</span>
+                            </div>
+                            <div class="side-card-body">
+                                <h3>${item.judul}</h3>
+                                <a href="template-artikel.html?id=${item.id}" class="side-btn">Baca</a>
+                            </div>
+                        </div>`;
+                });
+                sidebarWadah.innerHTML = htmlSidebar;
+            })
+            .catch(err => console.error("Gagal muat sidebar:", err));
+
+
+    });
+
+    window.addEventListener("load", function() {
+        const loader = document.querySelector(".loader-wrapper");
+        if(loader) { setTimeout(() => { loader.classList.add("loaded"); }, 1200); }
+    });
 
         // --- 2. LOGIKA MENU MOBILE & DROPDOWN ---
         const menuToggle = document.querySelector('.menu-toggle');
@@ -175,7 +197,7 @@
                 }
             }
         });
-    }); // <--- PENUTUP DOMContentLoaded UTAMA
+ // <--- PENUTUP DOMContentLoaded UTAMA
 
     // --- 3. LOGIKA LOADING (TETAP DI LUAR) ---
     window.addEventListener("load", function() {

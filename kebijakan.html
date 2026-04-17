@@ -146,7 +146,7 @@
     window.addEventListener("load", function() {
         const loader = document.querySelector(".loader-wrapper");
         
-        // Kasih waktu logo buat 'napas' bentar
+        // Kasih waktu logo buat diem bentar
         setTimeout(() => {
             loader.classList.add("loaded");
         }, 1200); 
@@ -188,7 +188,7 @@
         if (navLinks && navLinks.classList.contains('active')) {
             if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
                 navLinks.classList.remove('active');
-                // Jangan lupa hapus class di header pas menu ditutup klik luar
+                // hapus class di header pas menu ditutup klik luar
                 header.classList.remove('nav-active'); 
             }
         }

@@ -6,6 +6,7 @@
     <title>Pendidikan Nama Pondok</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <!-- buat animasi loading -->
@@ -56,7 +57,12 @@
         <div class="header-pendidikan">
             <h2>Mingguan Menulis</h2>
             <p>Karya Literasi dan Pemikiran Santri Nama Pondok</p>
+            <div class="upl-btns" style="margin-top: 20px;">
+                <a href="upload-karya.html" class="btn-Up" style="text-decoration: none;">
+                    <i class="fas fa-pen-nib"></i> Kirim Karya Santri
+                </a>
             <hr class="divider-gold">
+            </div>
         </div>
         <!-- ===================================================================== -->
         <!--  ----------------------  BUAT ARTIKEL CARD DISINI  ---------------------- -->
@@ -118,106 +124,88 @@
 </footer>
 
 <script>
-    // 1. Kita minta data ke file gudang (artikel.json)
-    fetch('artikel.json')
-        .then(response => response.json())
-        .then(data => {
-            const wadah = document.getElementById('daftarArtikel');
-            let semuaKartu = ""; // Tempat nampung kartu sebelum dipasang
+    // 1. KONFIGURASI SISTEM
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzxF7Eff3LMw70Eh7Zm0Tec-N_OqK5solJx0UI8XCqVmD3sWxvytlpQGOQXoo0ALGYo/exec';
 
-            // 2. Kita looping (ulangi) sebanyak data yang ada di JSON
-            data.forEach(item => {
-                
-                // --- INI KODINGAN PANJANG LU TADI ---
-                // Variabel seperti ${item.judul} akan ganti otomatis tiap putaran
-                const cetakanKartu = `
-                    <div class="artikel-card">
-                        <div class="card-image">
-                            <img src="${item.gambar}" alt="${item.judul}">
-                            <span class="tag-kategori">${item.kategori}</span>
-                        </div>
-                        <div class="card-body">
-                            <div class="meta-data">
-                                <span><i class="far fa-user"></i> ${item.penulis}</span>
-                                <span><i class="far fa-calendar-alt"></i> ${item.tanggal}</span>
+    // 2. FUNGSI AMBIL DATA (GET)
+    function muatArtikel() {
+        const wadah = document.getElementById('daftarArtikel');
+        wadah.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #666;">⏳ Memuat karya santri...</p>`;
+
+        fetch(`${scriptURL}?action=getArticles`)
+            .then(response => response.json())
+            .then(data => {
+                let semuaKartu = "";
+                if (!data || data.length === 0) {
+                    wadah.innerHTML = `<p style="grid-column: 1/-1; text-align: center;">Belum ada tulisan santri minggu ini.</p>`;
+                    return;
+                }
+
+                // Urutan terbaru di atas
+                data.reverse().forEach(item => {
+                    semuaKartu += `
+                        <div class="artikel-card">
+                            <div class="card-image">
+                                <img src="${item.gambar}" alt="${item.judul}">
+                                <span class="tag-kategori">${item.kategori}</span>
                             </div>
-                            <h3>${item.judul}</h3>
-                            <p>${item.ringkasan}</p>
-                            <a href="template-artikel.html?id=${item.id}" class="btn-baca">
-                                Baca Selengkapnya
-                            </a>
-                        </div>
-                    </div>
-                `;
-
-                semuaKartu += cetakanKartu; // Tambahin kartu yang baru dibuat ke tumpukan
+                            <div class="card-body">
+                                <div class="meta-data">
+                                    <span><i class="far fa-user"></i> ${item.penulis}</span>
+                                    <span><i class="far fa-calendar-alt"></i> ${item.tanggal}</span>
+                                </div>
+                                <h3>${item.judul}</h3>
+                                <p>${item.ringkasan}</p>
+                                <a href="template-artikel.html?id=${item.id}" class="btn-baca">
+                                    Baca Selengkapnya
+                                </a>
+                            </div>
+                        </div>`;
+                });
+                wadah.innerHTML = semuaKartu;
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                wadah.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: red;">Gagal memuat data. Periksa koneksi atau URL Script.</p>`;
             });
+    }
 
-            // 3. Pasang semua kartu sekaligus ke dalam wadah
-            wadah.innerHTML = semuaKartu;
-        })
-        .catch(error => {
-            console.log("Waduh, ada error pas narik data:", error);
-        });
-
-/* =========================================================================== */
-    window.addEventListener("load", function() {
+    // 3. LOGIKA INTERFACE (Loading & Menu)
+    window.addEventListener("load", () => {
         const loader = document.querySelector(".loader-wrapper");
-        
-        // Kasih waktu logo buat 'napas' bentar
-        setTimeout(() => {
-            loader.classList.add("loaded");
-        }, 1200); 
+        if(loader) setTimeout(() => loader.classList.add("loaded"), 1200);
+        muatArtikel(); // Jalankan ambil data setelah page load
     });
 
-    document.addEventListener('DOMContentLoaded', function() {
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    const dropdownBtn = document.querySelector('.dropdown-btn');
-    const dropdownParent = document.querySelector('.dropdown');
-    // --- TAMBAHAN VARIABEL HEADER ---
-    const header = document.querySelector('header'); 
+    document.addEventListener('DOMContentLoaded', () => {
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        const dropdownBtn = document.querySelector('.dropdown-btn');
+        const dropdownParent = document.querySelector('.dropdown');
+        const header = document.querySelector('header'); 
 
-    // 1. Logika Garis Tiga (Menu Mobile) - SUDAH DIUPDATE
-    if (menuToggle && navLinks) {
-        menuToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            // Kunci animasinya di sini:
-            header.classList.toggle('nav-active'); 
-            navLinks.classList.toggle('active');
-        });
-    }
-
-    // 2. Logika Dropdown "Tentang" (Tetap)
-    if (dropdownBtn && dropdownParent) {
-        dropdownBtn.addEventListener('click', function(e) {
-            if (window.innerWidth <= 768) {
+        if (menuToggle) {
+            menuToggle.addEventListener('click', (e) => {
                 e.preventDefault();
-                e.stopPropagation();
-                dropdownParent.classList.toggle('show');
-            }
-        });
-    }
+                header.classList.toggle('nav-active'); 
+                navLinks.classList.toggle('active');
+            });
+        }
 
-    // 3. Klik di luar buat nutup (DIPERKETAT)
-    document.addEventListener('click', function(e) {
-        if (navLinks && navLinks.classList.contains('active')) {
-            if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
+        if (dropdownBtn && window.innerWidth <= 768) {
+            dropdownBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                dropdownParent.classList.toggle('show');
+            });
+        }
+
+        document.addEventListener('click', (e) => {
+            if (navLinks?.classList.contains('active') && !navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
                 navLinks.classList.remove('active');
-                // Jangan lupa hapus class di header pas menu ditutup klik luar
                 header.classList.remove('nav-active'); 
             }
-        }
-        
-        if (dropdownParent && dropdownParent.classList.contains('show')) {
-            if (!dropdownParent.contains(e.target)) {
-                dropdownParent.classList.remove('show');
-            }
-        }
+        });
     });
-});
 </script>
 </body>
-</html>
+</html> 

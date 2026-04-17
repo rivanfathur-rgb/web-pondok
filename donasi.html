@@ -189,11 +189,9 @@
         
         if(btnWakaf) {
             btnWakaf.addEventListener('click', function() {
-                // Arahin ke halaman donasi yang bakal lu buat
+                // Arahin ke halaman donasi 
                 window.location.href = 'donasi.html'; 
                 
-                // Atau kalau mau langsung WA buat nanya-nanya:
-                // window.open('https://wa.me/628123456789?text=Saya%20ingin%20berwakaf%20untuk%20cabang');
             });
         }
     });
@@ -202,7 +200,7 @@
     window.addEventListener("load", function() {
         const loader = document.querySelector(".loader-wrapper");
         
-        // Kasih waktu logo buat 'napas' bentar
+        // Kasih waktu logo buat diem bentar
         setTimeout(() => {
             loader.classList.add("loaded");
         }, 1200); 
@@ -244,7 +242,7 @@
         if (navLinks && navLinks.classList.contains('active')) {
             if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
                 navLinks.classList.remove('active');
-                // Jangan lupa hapus class di header pas menu ditutup klik luar
+                // hapus class di header pas menu ditutup klik luar
                 header.classList.remove('nav-active'); 
             }
         }
