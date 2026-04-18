@@ -6,6 +6,19 @@
     <title>Pondok Pesantren Nama Pondok</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+            /* Efek Fade-in khusus untuk gambar artikel */
+    .main-article-img, .card-image img, .side-card-image img, .warta-img img {
+        transition: opacity 0.5s ease-in-out;
+        opacity: 0; /* Defaultnya ngumpet dulu */
+    }
+
+    /* Saat sudah ada class .loaded, gambar baru muncul */
+    .main-article-img.loaded, .card-image img.loaded, .side-card-image img.loaded, .warta-img img.loaded {
+        opacity: 1;
+    }
+</style>
+
 </head>
 <body>
     <!-- buat animasi loading python -m http.server 8000-->
@@ -141,101 +154,86 @@
 </a>
 
 <script>
-    /* ini buat loading */
-    window.addEventListener("load", function() {
-        const loader = document.querySelector(".loader-wrapper");
-        
-        // Kasih waktu logo buat diem bentar
-        setTimeout(() => {
-            loader.classList.add("loaded");
-        }, 1200); 
-    });
-/* INI BUAT AMBIL WARTA */
-    document.addEventListener('DOMContentLoaded', function() {
-        const container = document.getElementById('container-warta');
+    // 1. KONFIGURASI SISTEM
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzIpYtwMQjyhC1YAFuIP-3tOAoa-hBM2VzZpIy6cxMvT3rGSa4c1MBRAS6_N0FifAx5/exec';
 
-        fetch('warta.json')
-            .then(response => {
-                if (!response.ok) throw new Error('File JSON tidak ditemukan');
-                return response.json();
-            })
+    // 2. FUNGSI AMBIL DATA (GET)
+    function muatArtikel() {
+        const wadah = document.getElementById('container-warta');
+        wadah.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #666;">⏳ Memuat Warta Terkini...</p>`;
+
+        fetch(`${scriptURL}?action=getWarta`)
+            .then(response => response.json())
             .then(data => {
-                let cardsHTML = '';
-                
-                data.forEach(item => {
-                    cardsHTML += `
+                let semuaKartu = "";
+                if (!data || data.length === 0) {
+                    wadah.innerHTML = `<p style="grid-column: 1/-1; text-align: center;">Belum ada Berita Atau Warta santri saat ini.</p>`;
+                    return;
+                }
+
+                // Urutan terbaru di atas
+                data.reverse().forEach(item => {
+                    semuaKartu += `
                         <div class="warta-card">
                             <div class="warta-img">
-                                <img src="${item.gambar}" alt="${item.judul}" onerror="this.src='https://via.placeholder.com/400x250?text=Gambar+Berita'">
+                                <img src="${item.gambar}" alt="${item.judul}" loading="lazy" onload="this.classList.add('loaded')" onerror="this.src='https://via.placeholder.com/400x250?text=Gambar+Berita'">
                             </div>
                             <div class="warta-content">
                                 <span class="warta-date"><i class="far fa-calendar-alt"></i> ${item.tanggal}</span>
                                 <span class="category-label" style="font-size: 0.7rem; color: #144272;"># ${item.kategori}</span>
                                 <h3>${item.judul}</h3>
                                 <p>${item.ringkasan}</p>
-                                <a href="${item.link}" class="btn-read-more">Baca Selengkapnya <i class="fas fa-arrow-right"></i></a>
+                                <a href="template-artikel.html?id=${item.id}&type=warta" class="btn-read-more">
+                                    Baca Selengkapnya <i class="fas fa-arrow-right"></i>
+                                </a>
                             </div>
-                        </div>
-                    `;
+                        </div>`;
                 });
-
-                container.innerHTML = cardsHTML;
+                wadah.innerHTML = semuaKartu;
             })
             .catch(error => {
-                console.error('Error loading warta:', error);
-                container.innerHTML = '<p style="text-align:center;">Maaf, gagal memuat berita saat ini.</p>';
+                console.error("Error:", error);
+                wadah.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: red;">Gagal memuat data. Periksa koneksi atau URL Script.</p>`;
             });
+    }
+
+    // 3. LOGIKA INTERFACE (Loading & Menu)
+    window.addEventListener("load", () => {
+        const loader = document.querySelector(".loader-wrapper");
+        if(loader) setTimeout(() => loader.classList.add("loaded"), 1200);
+        muatArtikel(); // Jalankan ambil data setelah page load
     });
 
-    document.addEventListener('DOMContentLoaded', function() {
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    const dropdownBtn = document.querySelector('.dropdown-btn');
-    const dropdownParent = document.querySelector('.dropdown');
-    // --- TAMBAHAN VARIABEL HEADER ---
-    const header = document.querySelector('header'); 
+    document.addEventListener('DOMContentLoaded', () => {
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        const dropdownBtn = document.querySelector('.dropdown-btn');
+        const dropdownParent = document.querySelector('.dropdown');
+        const header = document.querySelector('header'); 
 
-    // 1. Logika Garis Tiga (Menu Mobile) - SUDAH DIUPDATE
-    if (menuToggle && navLinks) {
-        menuToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            // Kunci animasinya di sini:
-            header.classList.toggle('nav-active'); 
-            navLinks.classList.toggle('active');
-        });
-    }
-
-    // 2. Logika Dropdown "Tentang" (Tetap)
-    if (dropdownBtn && dropdownParent) {
-        dropdownBtn.addEventListener('click', function(e) {
-            if (window.innerWidth <= 768) {
+        if (menuToggle) {
+            menuToggle.addEventListener('click', (e) => {
                 e.preventDefault();
-                e.stopPropagation();
-                dropdownParent.classList.toggle('show');
-            }
-        });
-    }
+                header.classList.toggle('nav-active'); 
+                navLinks.classList.toggle('active');
+            });
+        }
 
-    // 3. Klik di luar buat nutup (DIPERKETAT)
-    document.addEventListener('click', function(e) {
-        if (navLinks && navLinks.classList.contains('active')) {
-            if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
+        if (dropdownBtn && window.innerWidth <= 768) {
+            dropdownBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                dropdownParent.classList.toggle('show');
+            });
+        }
+
+        document.addEventListener('click', (e) => {
+            if (navLinks?.classList.contains('active') && !navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
                 navLinks.classList.remove('active');
-                // hapus class di header pas menu ditutup klik luar
                 header.classList.remove('nav-active'); 
             }
-        }
-        
-        if (dropdownParent && dropdownParent.classList.contains('show')) {
-            if (!dropdownParent.contains(e.target)) {
-                dropdownParent.classList.remove('show');
-            }
-        }
+        });
     });
 
-});
 </script>
 </body>
 </html>

@@ -1235,7 +1235,7 @@ PROFIL PONDOK
 .article-image-container {
     width: 100%;        /* Lebar wajib 100% dari konten kiri */
     max-width: 100%;    /* Biar gak bisa lebih lebar dari pembungkusnya */
-    height: 400px;      /* Gue pendekin dikit dari 450px biar lebih pas */
+    height: auto;      
     margin-bottom: 25px;
     overflow: hidden;   /* Potong gambar yang keluar batas */
     border-radius: 12px;
@@ -1245,11 +1245,10 @@ PROFIL PONDOK
 }
 
 .main-article-img {
-    width: 100% !important;  /* Paksa lebar gambar 100% */
-    height: 100% !important; /* Paksa tinggi gambar 100% */
-    object-fit: cover;       /* Gambar dipotong rapi, bukan digepengkan */
-    object-position: center; 
+    width: 100%;
+    height: auto; /* Biar tinggi ngikutin asli foto */
     display: block;
+    border-radius: 12px;
 }
 
 /* --- TEXT ARTIKEL --- */
@@ -1333,9 +1332,16 @@ PROFIL PONDOK
 @media (max-width: 900px) {
     .main-wrapper {
         grid-template-columns: 1fr;
+        margin: 20px auto; /* Kurangin margin biar gak terlalu jauh jaraknya */
     }
     .article-image-container {
-        height: 300px; 
+        height: auto; /* JANGAN dikunci 300px, biar ngikutin tinggi foto */
+        max-height: 400px; /* Opsional: biar gak kepanjangan banget di tablet */
+    }
+    .main-article-img {
+        width: 100%;
+        height: auto;
+        display: block;
     }
 }
 
@@ -1344,10 +1350,20 @@ PROFIL PONDOK
         height: 35vh;
     }
     .herooo-overlay h1 {
-        font-size: 1.8rem;
+        font-size: 1.5rem; /* Gue kecilin dikit biar gak menuhin layar HP */
+        padding: 0 15px;
+    }
+    .content-left {
+        padding: 20px; /* Kurangin padding biar konten gak terlalu sempit */
     }
     .article-image-container {
-        height: 220px; 
+        height: auto; /* JANGAN dikunci 220px */
+        margin-bottom: 20px;
+    }
+    .main-article-img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px; /* Biar lebih smooth di layar kecil */
     }
     .sidebar-grid {
         grid-template-columns: 1fr;

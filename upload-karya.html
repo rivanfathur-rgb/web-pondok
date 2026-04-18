@@ -67,14 +67,36 @@
     </div>
 
     <header>
-        <nav class="container nav-mobile-wrapper">
-            <div class="logo"><img src="static/logo.png" alt="Logo"></div>
-            <ul class="nav-links">
-                <li><a href="index.html">Beranda</a></li>
-                <li><a href="pendidikan.html">Pendidikan</a></li>
-                <li><a href="pendaftaran.html">Pendaftaran</a></li>
-            </ul>
-        </nav>
+    <nav class="container nav-mobile-wrapper">
+        <div class="menu-toggle" id="mobile-menu">
+           <span class="line"></span>
+            <span class="line"></span>
+            <span class="line"></span>
+        </div>
+
+        <div class="logo">
+            <img src="static/logo.png" alt="Logo">
+        </div>
+
+        <div class="search-icon-mobile">
+            <i class="fas fa-search"></i>
+        </div>
+
+        <ul class="nav-links" id="nav-list">
+            <li><a href="index.html">Beranda</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-btn">Tentang <i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown-content">
+                    <li><a href="tentang.html">Profil Pondok</a></li>
+                    <li><a href="sejarah.html">Sejarah Yayasan</a></li>
+                    <li><a href="cabang.html">Kampus Cabang</a></li>
+                </ul>
+            </li>
+            <li><a href="pendidikan.html">Pendidikan</a></li>
+            <li><a href="warta.html">Warta</a></li>
+            <li><a href="pendaftaran.html">Pendaftaran</a></li>
+        </ul>
+    </nav>
     </header>
 
     <div class="uk-section-wrapper">
@@ -132,17 +154,47 @@
 
     <script>
     // PASTIKAN URL INI ADALAH URL DEPLOY TERBARU (VERSION: NEW)
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzxF7Eff3LMw70Eh7Zm0Tec-N_OqK5solJx0UI8XCqVmD3sWxvytlpQGOQXoo0ALGYo/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzIpYtwMQjyhC1YAFuIP-3tOAoa-hBM2VzZpIy6cxMvT3rGSa4c1MBRAS6_N0FifAx5/exec';
     
     const form = document.getElementById('uk-main-form');
     const btnOtp = document.getElementById('uk-btn-get-otp');
     const otpSection = document.getElementById('uk-otp-section');
 
-    // 1. Loader Control
+    // 3. LOGIKA INTERFACE (Loading & Menu)
     window.addEventListener("load", () => {
-        setTimeout(() => {
-            document.querySelector(".loader-wrapper").classList.add("loaded");
-        }, 1000);
+        const loader = document.querySelector(".loader-wrapper");
+        if(loader) setTimeout(() => loader.classList.add("loaded"), 1200);
+        muatArtikel(); // Jalankan ambil data setelah page load
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        const dropdownBtn = document.querySelector('.dropdown-btn');
+        const dropdownParent = document.querySelector('.dropdown');
+        const header = document.querySelector('header'); 
+
+        if (menuToggle) {
+            menuToggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                header.classList.toggle('nav-active'); 
+                navLinks.classList.toggle('active');
+            });
+        }
+
+        if (dropdownBtn && window.innerWidth <= 768) {
+            dropdownBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                dropdownParent.classList.toggle('show');
+            });
+        }
+
+        document.addEventListener('click', (e) => {
+            if (navLinks?.classList.contains('active') && !navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
+                navLinks.classList.remove('active');
+                header.classList.remove('nav-active'); 
+            }
+        });
     });
 
     // 2. Minta OTP (DIPERBARUI: Kirim Data Lengkap ke Tele)
@@ -212,6 +264,8 @@
         })
         .catch(() => Swal.fire('Error', 'Masalah jaringan.', 'error'));
     });
+
+
 </script>
 </body>
 </html>
