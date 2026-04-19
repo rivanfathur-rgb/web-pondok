@@ -1211,17 +1211,19 @@ PROFIL PONDOK
     font-size: 3rem;
     text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
     margin-bottom: 10px;
+    margin-top: 7px; /* jarak judul ke tulisan diatasnya */
 }
 
 /* --- LAYOUT WRAPPER --- */
 .main-wrapper {
     display: grid;
+    /* GESER porsi sedikit biar sidebar lebih lebar, area kosong di kiri artikel berkurang */
     grid-template-columns: 2fr 1fr; 
-    gap: 40px;
+    gap: 30px;
     max-width: 1200px;
     margin: 40px auto;
     padding: 0 20px;
-    align-items: start; /* Biar sidebar gak narik ke bawah */
+    align-items: start;
 }
 
 .content-left {
@@ -1280,8 +1282,24 @@ PROFIL PONDOK
 
 .sidebar-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    /* PAKSA jadi 2 kolom, jangan pake auto-fit biar gak bikin kolom hantu */
+    grid-template-columns: 1fr 1fr; 
     gap: 15px;
+    width: 100%; /* Pastikan grid menuhin lebar sidebar */
+}
+
+.btn-side-nulis {
+    color: var(--primary-green);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-side-nulis:hover {
+    gap: 10px;
 }
 
 .side-card {

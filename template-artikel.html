@@ -155,22 +155,22 @@
                 .then(res => res.json())
                 .then(data => {
                     const sidebarWadah = document.getElementById('sidebarGrid');
-                    // Filter biar konten yang lagi dibaca gak muncul di sidebar, ambil 4 aja
-                    const saran = data.filter(a => a.id != idDicari).slice(0, 4);
+                    // Filter biar konten yang lagi dibaca gak muncul di sidebar, ambil 6 aja
+                    const saran = data.filter(a => a.id != idDicari).slice(0, 6);
 
                     let htmlSidebar = "";
                     saran.forEach(item => {
                         htmlSidebar += `
-                        <div class="side-card">
-                            <div class="side-card-image">
-                                <img src="${item.gambar}" alt="Gambar" loading="lazy" onerror="this.src='https://via.placeholder.com/400x250?text=Gambar+Side'">
-                                <span class="side-tag">${item.kategori}</span>
-                            </div>
-                            <div class="side-card-body">
-                                <h3>${item.judul}</h3>
-                                <a href="template-artikel.html?id=${item.id}&type=${tipeKonten}" class="side-btn">Baca</a>
-                            </div>
-                        </div>`;
+<div class="side-card">
+<div class="side-card-image">
+<img src="${item.gambar}" alt="Gambar" loading="lazy" onerror="this.src='https://via.placeholder.com/400x250?text=Gambar+Side'">
+<span class="side-tag">${item.kategori}</span>
+</div>
+<div class="side-card-body">
+<h3>${item.judul}</h3>
+<a href="template-artikel.html?id=${item.id}&type=${tipeKonten}" class="btn-side-nulis"> Baca <i class="fas fa-arrow-right"></i></a>
+</div>
+</div>`;
                     });
                     sidebarWadah.innerHTML = htmlSidebar;
                 })
@@ -226,14 +226,6 @@
             }
         });
         // <--- PENUTUP DOMContentLoaded UTAMA
-
-        // --- 3. LOGIKA LOADING (TETAP DI LUAR) ---
-        window.addEventListener("load", function () {
-            const loader = document.querySelector(".loader-wrapper");
-            if (loader) {
-                setTimeout(() => { loader.classList.add("loaded"); }, 1200);
-            }
-        });
     </script>
 </body>
 
