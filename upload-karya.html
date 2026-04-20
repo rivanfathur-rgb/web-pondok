@@ -96,6 +96,15 @@
             <li><a href="warta.html">Warta</a></li>
             <li><a href="pendaftaran.html">Pendaftaran</a></li>
         </ul>
+<!-- INI BUAT SEARCH OVERLAY -->
+        <div class="search-overlay" id="searchOverlay">
+            <div class="search-bar-container">
+                <input type="text" id="searchInput" placeholder="Cari tulisan atau santri...">
+                <button id="closeSearch"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+<!-- INI SEARCH SUGGESTIONS -->
+        <div id="searchSuggestions" class="suggestions-box"></div>
     </nav>
     </header>
 
@@ -152,129 +161,105 @@
         </div>
     </div>
 
+<script src="global-nav2.js"></script>
 <script>
-    // 1. KONFIGURASI UTAMA
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzlwYCO_kOflP3oJ6QqMf18LJKXEWPTUjPjN-04jSK7uLa1OczSl5ZrX6CG6II6J3Xs/exec';
-    
+    /* ============================================================
+       SCRIPT KHUSUS UPLOAD-KARYA.HTML
+       Variabel G_BASE_URL diambil dari global-nav2.js
+       ============================================================ */
+
     const form = document.getElementById('uk-main-form');
     const btnOtp = document.getElementById('uk-btn-get-otp');
     const otpSection = document.getElementById('uk-otp-section');
 
-    // 2. LOGIKA INTERFACE (Loading Screen & Navigation)
-    window.addEventListener("load", () => {
-        const loader = document.querySelector(".loader-wrapper");
-        if(loader) setTimeout(() => loader.classList.add("loaded"), 1200);
-    });
+    // 1. MINTA OTP (GET Request ke Telegram Admin via Apps Script)
+    if (btnOtp) {
+        btnOtp.addEventListener('click', () => {
+            const penulis = document.getElementById('uk-penulis').value;
+            const judul = document.getElementById('uk-judul').value;
+            const kategori = document.getElementById('uk-kategori').value;
+            const ringkasan = document.getElementById('uk-ringkasan').value;
+            const gambar = document.getElementById('uk-gambar').value;
+            const isi = document.getElementById('uk-isi').value;
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const menuToggle = document.querySelector('.menu-toggle');
-        const navLinks = document.querySelector('.nav-links');
-        const header = document.querySelector('header'); 
-
-        if (menuToggle) {
-            menuToggle.addEventListener('click', (e) => {
-                e.preventDefault();
-                header.classList.toggle('nav-active'); 
-                navLinks.classList.toggle('active');
-            });
-        }
-
-        // Close menu saat klik di luar
-        document.addEventListener('click', (e) => {
-            if (navLinks?.classList.contains('active') && !navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
-                navLinks.classList.remove('active');
-                header.classList.remove('nav-active'); 
+            // Validasi input utama
+            if(!penulis || !judul || !ringkasan || !isi) {
+                Swal.fire('Perhatian!', 'Lengkapi data penulis, judul, ringkasan, dan isi artikel terlebih dahulu.', 'warning');
+                return;
             }
+
+            btnOtp.disabled = true;
+            btnOtp.innerText = "Mengirim Request...";
+
+            // Parameter menggunakan G_BASE_URL
+            const params = `?action=requestOTP` +
+                           `&penulis=${encodeURIComponent(penulis)}` +
+                           `&judul=${encodeURIComponent(judul)}` +
+                           `&kategori=${encodeURIComponent(kategori)}` +
+                           `&ringkasan=${encodeURIComponent(ringkasan)}` +
+                           `&gambar=${encodeURIComponent(gambar)}` +
+                           `&isi=${encodeURIComponent(isi)}`;
+
+            fetch(G_BASE_URL + params)
+                .then(res => res.json())
+                .then(response => {
+                    if(response.result === "success") {
+                        Swal.fire('Berhasil!', 'Request terkirim. Segera hubungi Admin untuk mendapatkan kode OTP!', 'success');
+                        otpSection.style.display = 'block'; 
+                        btnOtp.style.display = 'none';      
+                    } else {
+                        Swal.fire('Error', 'Gagal kirim request: ' + response.message, 'error');
+                        btnOtp.disabled = false;
+                        btnOtp.innerText = "Minta Kode OTP dari Admin";
+                    }
+                })
+                .catch((err) => {
+                    console.error("OTP Error:", err);
+                    Swal.fire('Error', 'Koneksi gagal. Pastikan global-nav2.js sudah terpasang dengan benar.', 'error');
+                    btnOtp.disabled = false;
+                    btnOtp.innerText = "Minta Kode OTP dari Admin";
+                });
         });
-    });
+    }
 
-    // 3. MINTA OTP (GET Request ke Telegram Admin)
-    btnOtp.addEventListener('click', () => {
-        const penulis = document.getElementById('uk-penulis').value;
-        const judul = document.getElementById('uk-judul').value;
-        const kategori = document.getElementById('uk-kategori').value;
-        const ringkasan = document.getElementById('uk-ringkasan').value;
-        const gambar = document.getElementById('uk-gambar').value;
-        const isi = document.getElementById('uk-isi').value;
+    // 2. KIRIM DATA FINAL (POST Request)
+    if (form) {
+        form.addEventListener('submit', e => {
+            e.preventDefault(); 
+            
+            Swal.fire({ 
+                title: 'Menerbitkan...', 
+                text: 'Sedang memverifikasi OTP dan menyimpan artikel...',
+                allowOutsideClick: false,
+                didOpen: () => { Swal.showLoading() }
+            });
 
-        // Validasi: Pastikan data utama sudah diisi sebelum minta OTP
-        if(!penulis || !judul || !ringkasan || !isi) {
-            Swal.fire('Perhatian!', 'Lengkapi data penulis, judul, ringkasan, dan isi artikel terlebih dahulu.', 'warning');
-            return;
-        }
+            const bodyData = new URLSearchParams(new FormData(form));
 
-        btnOtp.disabled = true;
-        btnOtp.innerText = "Mengirim Request...";
-
-        // Parameter dikirim via URL untuk doGet di Apps Script
-        const params = `?action=requestOTP` +
-                       `&penulis=${encodeURIComponent(penulis)}` +
-                       `&judul=${encodeURIComponent(judul)}` +
-                       `&kategori=${encodeURIComponent(kategori)}` +
-                       `&ringkasan=${encodeURIComponent(ringkasan)}` +
-                       `&gambar=${encodeURIComponent(gambar)}` +
-                       `&isi=${encodeURIComponent(isi)}`;
-
-        fetch(scriptURL + params)
+            fetch(G_BASE_URL, { 
+                method: 'POST', 
+                body: bodyData,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
             .then(res => res.json())
             .then(response => {
                 if(response.result === "success") {
-                    Swal.fire('Berhasil!', 'Request terkirim. Segera hubungi Admin untuk mendapatkan kode OTP!', 'success');
-                    otpSection.style.display = 'block'; // Munculkan input OTP
-                    btnOtp.style.display = 'none';      // Sembunyikan tombol request
+                    Swal.fire('Sukses!', 'Artikel Anda berhasil diposting!', 'success')
+                    .then(() => { 
+                        window.location.href = 'pendidikan.html'; 
+                    });
                 } else {
-                    Swal.fire('Error', 'Gagal kirim request: ' + response.message, 'error');
-                    btnOtp.disabled = false;
-                    btnOtp.innerText = "Minta Kode OTP dari Admin";
+                    Swal.fire('Gagal!', response.message, 'error');
                 }
             })
             .catch((err) => {
-                console.error("OTP Error:", err);
-                Swal.fire('Error', 'Koneksi gagal. Pastikan URL Script benar dan statusnya Anyone.', 'error');
-                btnOtp.disabled = false;
-                btnOtp.innerText = "Minta Kode OTP dari Admin";
+                console.error("Submit Error:", err);
+                Swal.fire('Error', 'Terjadi kesalahan sistem saat menyimpan data.', 'error');
             });
-    });
-
-    // 4. KIRIM DATA KE SPREADSHEET (POST Request)
-    form.addEventListener('submit', e => {
-        e.preventDefault(); // PENTING: Mencegah halaman refresh otomatis
-        
-        Swal.fire({ 
-            title: 'Menerbitkan...', 
-            text: 'Sedang memverifikasi OTP dan menyimpan artikel...',
-            allowOutsideClick: false,
-            didOpen: () => { Swal.showLoading() }
         });
-
-        // FormData otomatis mengambil semua input yang memiliki atribut 'name'
-        const bodyData = new URLSearchParams(new FormData(form));
-
-        fetch(scriptURL, { 
-            method: 'POST', 
-            body: bodyData,
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        })
-        .then(res => res.json())
-        .then(response => {
-            if(response.result === "success") {
-                Swal.fire('Sukses!', 'Artikel Anda berhasil diposting!', 'success')
-                .then(() => { 
-                    // Pindah ke halaman pendidikan setelah berhasil
-                    window.location.href = 'pendidikan.html'; 
-                });
-            } else {
-                // Biasanya error di sini karena OTP salah
-                Swal.fire('Gagal!', response.message, 'error');
-            }
-        })
-        .catch((err) => {
-            console.error("Submit Error:", err);
-            Swal.fire('Error', 'Terjadi kesalahan sistem. Cek Console (F12) untuk detail.', 'error');
-        });
-    });
+    }
 </script>
 </body>
 </html>

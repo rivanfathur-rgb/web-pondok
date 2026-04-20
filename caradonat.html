@@ -63,6 +63,15 @@
             <li><a href="warta.html">Warta</a></li>
             <li><a href="pendaftaran.html">Pendaftaran</a></li>
         </ul>
+<!-- INI BUAT SEARCH OVERLAY -->
+        <div class="search-overlay" id="searchOverlay">
+            <div class="search-bar-container">
+                <input type="text" id="searchInput" placeholder="Cari tulisan atau santri...">
+                <button id="closeSearch"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+<!-- INI SEARCH SUGGESTIONS -->
+        <div id="searchSuggestions" class="suggestions-box"></div>
     </nav>
     </header>
 
@@ -170,66 +179,6 @@
     <i class="fab fa-whatsapp"></i>
 </a>
 
-<script>
-    /* ini buat loading */
-    window.addEventListener("load", function() {
-        const loader = document.querySelector(".loader-wrapper");
-        
-        // Kasih waktu logo buat diem bentar
-        setTimeout(() => {
-            loader.classList.add("loaded");
-        }, 1200); 
-    });
-
-    document.addEventListener('DOMContentLoaded', function() {
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    const dropdownBtn = document.querySelector('.dropdown-btn');
-    const dropdownParent = document.querySelector('.dropdown');
-    // --- TAMBAHAN VARIABEL HEADER ---
-    const header = document.querySelector('header'); 
-
-    // 1. Logika Garis Tiga (Menu Mobile) - SUDAH DIUPDATE
-    if (menuToggle && navLinks) {
-        menuToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            // Kunci animasinya di sini:
-            header.classList.toggle('nav-active'); 
-            navLinks.classList.toggle('active');
-        });
-    }
-
-    // 2. Logika Dropdown "Tentang" (Tetap)
-    if (dropdownBtn && dropdownParent) {
-        dropdownBtn.addEventListener('click', function(e) {
-            if (window.innerWidth <= 768) {
-                e.preventDefault();
-                e.stopPropagation();
-                dropdownParent.classList.toggle('show');
-            }
-        });
-    }
-
-    // 3. Klik di luar buat nutup (DIPERKETAT)
-    document.addEventListener('click', function(e) {
-        if (navLinks && navLinks.classList.contains('active')) {
-            if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
-                navLinks.classList.remove('active');
-                // hapus class di header pas menu ditutup klik luar
-                header.classList.remove('nav-active'); 
-            }
-        }
-        
-        if (dropdownParent && dropdownParent.classList.contains('show')) {
-            if (!dropdownParent.contains(e.target)) {
-                dropdownParent.classList.remove('show');
-            }
-        }
-    });
-
-});
-</script>
+<script src="global-nav.js"></script>
 </body>
 </html>

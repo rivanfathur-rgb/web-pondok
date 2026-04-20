@@ -54,6 +54,15 @@
                 <li><a href="warta.html">Warta</a></li>
                 <li><a href="pendaftaran.html">Pendaftaran</a></li>
             </ul>
+<!-- INI BUAT SEARCH OVERLAY -->
+        <div class="search-overlay" id="searchOverlay">
+            <div class="search-bar-container">
+                <input type="text" id="searchInput" placeholder="Cari tulisan atau santri...">
+                <button id="closeSearch"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+<!-- INI SEARCH SUGGESTIONS -->
+        <div id="searchSuggestions" class="suggestions-box"></div>
         </nav>
     </header>
 
@@ -97,136 +106,72 @@
         <i class="fab fa-whatsapp"></i>
     </a>
 
+<script src="global-nav2.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // 1. AMBIL PARAMETER DARI URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const idDicari = urlParams.get('id');
+        const tipeKonten = urlParams.get('type') || 'artikel'; 
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // 1. KONFIGURASI & AMBIL PARAMETER DARI URL
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbzlwYCO_kOflP3oJ6QqMf18LJKXEWPTUjPjN-04jSK7uLa1OczSl5ZrX6CG6II6J3Xs/exec';
-            const urlParams = new URLSearchParams(window.location.search);
-            const idDicari = urlParams.get('id');
-            const tipeKonten = urlParams.get('type') || 'artikel'; // Default ke 'artikel' (pendidikan) kalau type kosong
-
-            if (!idDicari) {
-                console.error("ID tidak ditemukan di URL");
-                return;
-            }
-
-            // Tentukan Action berdasarkan tipe konten (Warta atau Pendidikan)
-            const actionDetail = (tipeKonten === 'warta') ? 'getDetailWarta' : 'getDetail';
-            const actionList = (tipeKonten === 'warta') ? 'getWarta' : 'getArticles';
-            const tagLabel = (tipeKonten === 'warta') ? "Warta Pondok" : "Mingguan Menulis";
-
-            // 2. AMBIL DETAIL KONTEN (Isi Utama)
-            fetch(`${scriptURL}?action=${actionDetail}&id=${idDicari}`)
-                .then(res => res.json())
-                .then(artikel => {
-                    if (artikel) {
-                        document.getElementById('pageTitle').innerText = artikel.judul + " - Nama Pondok";
-                        document.getElementById('bigTitle').innerText = artikel.judul;
-                        document.getElementById('articleTag').innerText = `${tagLabel} - ${artikel.kategori}`;
-                        document.getElementById('authorName').innerText = artikel.penulis || "Admin";
-                        document.getElementById('articleDate').innerText = artikel.tanggal;
-                        document.getElementById('articleBody').innerHTML = artikel.isi;
-
-                        // --- UPDATE BAGIAN GAMBAR (LAZY LOAD + FADE IN) ---
-                        const imgElement = document.getElementById('mainImage');
-
-                        // 1. Set gambar jadi transparan dulu
-                        imgElement.style.opacity = "0";
-                        imgElement.style.transition = "opacity 0.5s ease-in-out";
-
-                        // 2. Pasang atribut lazy loading
-                        imgElement.setAttribute('loading', 'lazy');
-
-                        // 3. Set sumber gambar
-                        imgElement.src = artikel.gambar;
-
-                        // 4. Pas sudah "Load" sempurna, baru munculin (Fade In)
-                        imgElement.onload = function () {
-                            imgElement.style.opacity = "1";
-                        };
-                        // --------------------------------------------------
-                    }
-                })
-                .catch(err => console.error("Gagal muat detail:", err));
-
-            // 3. AMBIL REKOMENDASI (Sidebar) - Sesuai dengan tipe yang lagi dibaca
-            fetch(`${scriptURL}?action=${actionList}`)
-                .then(res => res.json())
-                .then(data => {
-                    const sidebarWadah = document.getElementById('sidebarGrid');
-                    // Filter biar konten yang lagi dibaca gak muncul di sidebar, ambil 6 aja
-                    const saran = data.filter(a => a.id != idDicari).slice(0, 6);
-
-                    let htmlSidebar = "";
-                    saran.forEach(item => {
-                        htmlSidebar += `
-<div class="side-card">
-<div class="side-card-image">
-<img src="${item.gambar}" alt="Gambar" loading="lazy" onerror="this.src='https://via.placeholder.com/400x250?text=Gambar+Side'">
-<span class="side-tag">${item.kategori}</span>
-</div>
-<div class="side-card-body">
-<h3>${item.judul}</h3>
-<a href="template-artikel.html?id=${item.id}&type=${tipeKonten}" class="btn-side-nulis"> Baca <i class="fas fa-arrow-right"></i></a>
-</div>
-</div>`;
-                    });
-                    sidebarWadah.innerHTML = htmlSidebar;
-                })
-                .catch(err => console.error("Gagal muat sidebar:", err));
-        });
-
-        // --- LOGIKA LOADING (TETAP DI BAWAH) ---
-        window.addEventListener("load", function () {
-            const loader = document.querySelector(".loader-wrapper");
-            if (loader) {
-                setTimeout(() => { loader.classList.add("loaded"); }, 1200);
-            }
-        });
-
-        // --- 2. LOGIKA MENU MOBILE & DROPDOWN ---
-        const menuToggle = document.querySelector('.menu-toggle');
-        const navLinks = document.querySelector('.nav-links');
-        const dropdownBtn = document.querySelector('.dropdown-btn');
-        const dropdownParent = document.querySelector('.dropdown');
-        const header = document.querySelector('header');
-
-        if (menuToggle && navLinks) {
-            menuToggle.addEventListener('click', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                header.classList.toggle('nav-active');
-                navLinks.classList.toggle('active');
-            });
+        if (!idDicari) {
+            console.error("ID tidak ditemukan di URL");
+            return;
         }
 
-        if (dropdownBtn && dropdownParent) {
-            dropdownBtn.addEventListener('click', function (e) {
-                if (window.innerWidth <= 768) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    dropdownParent.classList.toggle('show');
-                }
-            });
-        }
+        // Pakai G_BASE_URL dari global-nav.js
+        // Tentukan Action berdasarkan tipe konten
+        const actionDetail = (tipeKonten === 'warta') ? 'getDetailWarta' : 'getDetail';
+        const actionList = (tipeKonten === 'warta') ? 'getWarta' : 'getArticles';
+        const tagLabel = (tipeKonten === 'warta') ? "Warta Pondok" : "Mingguan Menulis";
 
-        // Klik di luar buat nutup menu
-        document.addEventListener('click', function (e) {
-            if (navLinks && navLinks.classList.contains('active')) {
-                if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
-                    navLinks.classList.remove('active');
-                    header.classList.remove('nav-active');
+        // 2. AMBIL DETAIL KONTEN
+        fetch(`${G_BASE_URL}?action=${actionDetail}&id=${idDicari}`)
+            .then(res => res.json())
+            .then(artikel => {
+                if (artikel) {
+                    document.getElementById('pageTitle').innerText = artikel.judul + " - Nama Pondok";
+                    document.getElementById('bigTitle').innerText = artikel.judul;
+                    document.getElementById('articleTag').innerText = `${tagLabel} - ${artikel.kategori}`;
+                    document.getElementById('authorName').innerText = artikel.penulis || "Admin";
+                    document.getElementById('articleDate').innerText = artikel.tanggal;
+                    document.getElementById('articleBody').innerHTML = artikel.isi;
+
+                    const imgElement = document.getElementById('mainImage');
+                    imgElement.style.opacity = "0";
+                    imgElement.style.transition = "opacity 0.5s ease-in-out";
+                    imgElement.src = artikel.gambar;
+                    imgElement.onload = () => imgElement.style.opacity = "1";
                 }
-            }
-            if (dropdownParent && dropdownParent.classList.contains('show')) {
-                if (!dropdownParent.contains(e.target)) {
-                    dropdownParent.classList.remove('show');
-                }
-            }
-        });
-        // <--- PENUTUP DOMContentLoaded UTAMA
-    </script>
+            })
+            .catch(err => console.error("Gagal muat detail:", err));
+
+        // 3. AMBIL REKOMENDASI (Sidebar)
+        fetch(`${G_BASE_URL}?action=${actionList}`)
+            .then(res => res.json())
+            .then(data => {
+                const sidebarWadah = document.getElementById('sidebarGrid');
+                const saran = data.filter(a => a.id != idDicari).slice(0, 6);
+
+                let htmlSidebar = "";
+                saran.forEach(item => {
+                    htmlSidebar += `
+                        <div class="side-card">
+                            <div class="side-card-image">
+                                <img src="${item.gambar}" alt="Gambar" loading="lazy" onerror="this.src='https://via.placeholder.com/400x250?text=Gambar+Side'">
+                                <span class="side-tag">${item.kategori}</span>
+                            </div>
+                            <div class="side-card-body">
+                                <h3>${item.judul}</h3>
+                                <a href="template-artikel.html?id=${item.id}&type=${tipeKonten}" class="btn-side-nulis"> Baca <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>`;
+                });
+                sidebarWadah.innerHTML = htmlSidebar;
+            })
+            .catch(err => console.error("Gagal muat sidebar:", err));
+    });
+</script>
 </body>
 
 </html>
