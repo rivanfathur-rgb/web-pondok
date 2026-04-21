@@ -1,4 +1,4 @@
 git status
  git add .
- git commit -m "UPDATE FITUR SEARCH"      
+ git commit -m "UPDATE JS"      
   git push origin main

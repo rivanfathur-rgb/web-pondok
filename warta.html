@@ -6,6 +6,7 @@
     <title>Pondok Pesantren Nama Pondok</title>
     <link rel="stylesheet" href="static/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="static/js/pirman.js"></script>
 <style>
             /* Efek Fade-in khusus untuk gambar artikel */
     .main-article-img, .card-image img, .side-card-image img, .warta-img img {
@@ -163,47 +164,6 @@
 </a>
 
 <script src="static/js/global-nav2.js"></script>
-<script>
-    // 1. KONFIGURASI SISTEM UDAH DI FILE static/js/global-nav2.js, JADI GAK PERLU DITULIS LAGI DISINI
-    // 2. FUNGSI AMBIL DATA (GET)
-    function muatArtikel() {
-        const wadah = document.getElementById('container-warta');
-        wadah.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #666;">⏳ Memuat Warta Terkini...</p>`;
-
-        fetch(`${G_BASE_URL}?action=getWarta`)
-            .then(response => response.json())
-            .then(data => {
-                let semuaKartu = "";
-                if (!data || data.length === 0) {
-                    wadah.innerHTML = `<p style="grid-column: 1/-1; text-align: center;">Belum ada Berita Atau Warta santri saat ini.</p>`;
-                    return;
-                }
-
-                // Urutan terbaru di atas
-                data.reverse().forEach(item => {
-                    semuaKartu += `
-                        <div class="warta-card">
-                            <div class="warta-img">
-                                <img src="${item.gambar}" alt="${item.judul}" loading="lazy" onload="this.classList.add('loaded')" onerror="this.src='https://via.placeholder.com/400x250?text=Gambar+Berita'">
-                            </div>
-                            <div class="warta-content">
-                                <span class="warta-date"><i class="far fa-calendar-alt"></i> ${item.tanggal}</span>
-                                <span class="category-label" style="font-size: 0.7rem; color: #144272;"># ${item.kategori}</span>
-                                <h3>${item.judul}</h3>
-                                <p>${item.ringkasan}</p>
-                                <a href="template-artikel.html?id=${item.id}&type=warta" class="btn-read-more">
-                                    Baca Selengkapnya <i class="fas fa-arrow-right"></i>
-                                </a>
-                            </div>
-                        </div>`;
-                });
-                wadah.innerHTML = semuaKartu;
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                wadah.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: red;">Gagal memuat data. Periksa koneksi atau URL Script.</p>`;
-            });
-    }
-</script>
+<script src="static/js/w.js"></script>
 </body>
 </html>
