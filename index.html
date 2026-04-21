@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pondok Pesantren Nama Pondok</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="static/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <!-- buat animasi loading      -->
     <div class="loader-wrapper">
         <div class="loader-content">
-            <img src="static/logo.png" alt="Logo almamater" class="loader-logo-modern">
+            <img src="static/img/logo.png" alt="Logo almamater" class="loader-logo-modern">
             <div class="loader-text">NAMA PONDOK</div>
         </div>
         <div class="loader-section section-left"></div>
@@ -40,7 +40,7 @@
             <span class="line"></span>
         </div>
         <div class="logo">
-            <img src="static/logo.png" alt="Logo">
+            <img src="static/img/logo.png" alt="Logo">
         </div>
 
         <div class="search-icon-mobile">
@@ -245,49 +245,7 @@
     <i class="fab fa-whatsapp"></i>
 </a>
 
-<script src="global-nav.js"></script>
-<script>
-/* ini buat animasi angka berapa santri ustad dll */
-const counters = document.querySelectorAll('.counter');
-    const speed = 200; // Makin besar angkanya, makin lambat jalannya
-
-    const startCounter = (entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const counter = entry.target;
-                const updateCount = () => {
-                    const target = +counter.getAttribute('data-target');
-                    const count = +counter.innerText;
-                    
-                    // Hitung pertambahan angka
-                    const inc = target / speed;
-
-                    if (count < target) {
-                        // Tambah angka dan bulatkan ke atas
-                        counter.innerText = Math.ceil(count + inc);
-                        // Jalankan ulang fungsi setiap 1 milidetik
-                        setTimeout(updateCount, 1);
-                    } else {
-                        counter.innerText = target;
-                    }
-                };
-                updateCount();
-                // Berhenti mengamati setelah animasi jalan sekali
-                observer.unobserve(counter);
-            }
-        });
-    };
-
-    const observerOptions = {
-        threshold: 0.5 // Animasi jalan kalau 50% bagian angka sudah kelihatan di layar
-    };
-
-    const observer = new IntersectionObserver(startCounter, observerOptions);
-
-    counters.forEach(counter => {
-        observer.observe(counter);
-    });
-
-</script>
+<script src="static/js/global-nav.js"></script>
+<script src="static/js/j.js"></script>
 </body>
 </html>

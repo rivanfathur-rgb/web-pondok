@@ -129,7 +129,7 @@ header {
 /* --- Hero Section --- */
 .hero-almamater {
     height: 70vh;
-    background: url('static/bg.png') center/cover;
+    background: url('../img/bg.png') center/cover;
     position: relative;
     color: white;
 }
@@ -1196,7 +1196,7 @@ PROFIL PONDOK
 /* --- HERO SECTION --- */
 .hero-artik {
     height: 50vh;
-    background: url('static/arrtikel.jpg') center/cover;
+    background: url('../img/arrtikel.jpg') center/cover;
     position: relative;
     color: white;
 }
@@ -1423,7 +1423,7 @@ PROFIL PONDOK
     display: flex;
     align-items: center;
     justify-content: center;
-    background: url('static/bbgg.jpg') center/cover no-repeat;
+    background: url('../img/bbgg.jpg') center/cover no-repeat;
     text-align: center;
     color: white;
 }
@@ -1676,7 +1676,7 @@ PROFIL PONDOK
     display: flex;
     align-items: center;
     justify-content: center;
-    background: url('static/begond.jpg') center/cover no-repeat;
+    background: url('../img/begond.jpg') center/cover no-repeat;
     text-align: center;
     color: white;
     overflow: hidden;
@@ -2182,7 +2182,7 @@ header.header-warta-theme {
     align-items: center;
     padding: 60px 20px;
     /* Ganti URL di bawah dengan gambar background lu */
-    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('static/srtktt.jpg');
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('../img/srtktt.jpg');
     background-size: cover;
     background-position: center;
 }
@@ -2346,7 +2346,7 @@ header.header-warta-theme {
 /* Styling Section & Container */
 .pendaftaran-section {
     padding: 60px 20px;
-    background-image: url('static/dafttt.jpg'); 
+    background-image: url('../img/dafttt.jpg'); 
     background-size: cover; 
     background-position: center; 
     background-repeat: no-repeat; 

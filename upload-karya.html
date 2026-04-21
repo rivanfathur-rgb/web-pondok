@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Karya - Nama Pondok</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="static/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
@@ -14,7 +14,7 @@
             padding: 80px 20px;
             /* Ganti gambar di bawah ini dengan path gambar lu, misal static/bg-pondok.jpg */
             background: linear-gradient(rgba(15, 23, 42, 0.5), rgba(15, 23, 42, 0.5)), 
-                        url('static/upload.jpg'); 
+                        url('static/img/upload.jpg'); 
             background-size: cover;
             background-position: center;
             background-attachment: fixed; /* Biar keren pas di scroll gambarnya diem */
@@ -59,7 +59,7 @@
 <body>
     <div class="loader-wrapper">
         <div class="loader-content">
-            <img src="static/logo.png" alt="Logo" class="loader-logo-modern">
+            <img src="static/img/logo.png" alt="Logo" class="loader-logo-modern">
             <div class="loader-text">NAMA PONDOK</div>
         </div>
         <div class="loader-section section-left"></div>
@@ -75,7 +75,7 @@
         </div>
 
         <div class="logo">
-            <img src="static/logo.png" alt="Logo">
+            <img src="static/img/logo.png" alt="Logo">
         </div>
 
         <div class="search-icon-mobile">
@@ -161,105 +161,7 @@
         </div>
     </div>
 
-<script src="global-nav2.js"></script>
-<script>
-    /* ============================================================
-       SCRIPT KHUSUS UPLOAD-KARYA.HTML
-       Variabel G_BASE_URL diambil dari global-nav2.js
-       ============================================================ */
-
-    const form = document.getElementById('uk-main-form');
-    const btnOtp = document.getElementById('uk-btn-get-otp');
-    const otpSection = document.getElementById('uk-otp-section');
-
-    // 1. MINTA OTP (GET Request ke Telegram Admin via Apps Script)
-    if (btnOtp) {
-        btnOtp.addEventListener('click', () => {
-            const penulis = document.getElementById('uk-penulis').value;
-            const judul = document.getElementById('uk-judul').value;
-            const kategori = document.getElementById('uk-kategori').value;
-            const ringkasan = document.getElementById('uk-ringkasan').value;
-            const gambar = document.getElementById('uk-gambar').value;
-            const isi = document.getElementById('uk-isi').value;
-
-            // Validasi input utama
-            if(!penulis || !judul || !ringkasan || !isi) {
-                Swal.fire('Perhatian!', 'Lengkapi data penulis, judul, ringkasan, dan isi artikel terlebih dahulu.', 'warning');
-                return;
-            }
-
-            btnOtp.disabled = true;
-            btnOtp.innerText = "Mengirim Request...";
-
-            // Parameter menggunakan G_BASE_URL
-            const params = `?action=requestOTP` +
-                           `&penulis=${encodeURIComponent(penulis)}` +
-                           `&judul=${encodeURIComponent(judul)}` +
-                           `&kategori=${encodeURIComponent(kategori)}` +
-                           `&ringkasan=${encodeURIComponent(ringkasan)}` +
-                           `&gambar=${encodeURIComponent(gambar)}` +
-                           `&isi=${encodeURIComponent(isi)}`;
-
-            fetch(G_BASE_URL + params)
-                .then(res => res.json())
-                .then(response => {
-                    if(response.result === "success") {
-                        Swal.fire('Berhasil!', 'Request terkirim. Segera hubungi Admin untuk mendapatkan kode OTP!', 'success');
-                        otpSection.style.display = 'block'; 
-                        btnOtp.style.display = 'none';      
-                    } else {
-                        Swal.fire('Error', 'Gagal kirim request: ' + response.message, 'error');
-                        btnOtp.disabled = false;
-                        btnOtp.innerText = "Minta Kode OTP dari Admin";
-                    }
-                })
-                .catch((err) => {
-                    console.error("OTP Error:", err);
-                    Swal.fire('Error', 'Koneksi gagal. Pastikan global-nav2.js sudah terpasang dengan benar.', 'error');
-                    btnOtp.disabled = false;
-                    btnOtp.innerText = "Minta Kode OTP dari Admin";
-                });
-        });
-    }
-
-    // 2. KIRIM DATA FINAL (POST Request)
-    if (form) {
-        form.addEventListener('submit', e => {
-            e.preventDefault(); 
-            
-            Swal.fire({ 
-                title: 'Menerbitkan...', 
-                text: 'Sedang memverifikasi OTP dan menyimpan artikel...',
-                allowOutsideClick: false,
-                didOpen: () => { Swal.showLoading() }
-            });
-
-            const bodyData = new URLSearchParams(new FormData(form));
-
-            fetch(G_BASE_URL, { 
-                method: 'POST', 
-                body: bodyData,
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
-            })
-            .then(res => res.json())
-            .then(response => {
-                if(response.result === "success") {
-                    Swal.fire('Sukses!', 'Artikel Anda berhasil diposting!', 'success')
-                    .then(() => { 
-                        window.location.href = 'pendidikan.html'; 
-                    });
-                } else {
-                    Swal.fire('Gagal!', response.message, 'error');
-                }
-            })
-            .catch((err) => {
-                console.error("Submit Error:", err);
-                Swal.fire('Error', 'Terjadi kesalahan sistem saat menyimpan data.', 'error');
-            });
-        });
-    }
-</script>
+<script src="static/js/global-nav2.js"></script>
+<script src="static/js/p.js"></script>
 </body>
 </html>

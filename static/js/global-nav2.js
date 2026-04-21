@@ -2,7 +2,7 @@
 const G_BASE_URL = 'https://script.google.com/macros/s/AKfycbzlwYCO_kOflP3oJ6QqMf18LJKXEWPTUjPjN-04jSK7uLa1OczSl5ZrX6CG6II6J3Xs/exec'; 
 let G_ALL_SEARCH_DATA = [];
 /* ============================================================
-   GLOBAL-NAV.JS (VERSI AUTO-TRIGGER & ANTI-BENTROK)
+   static/js/global-nav.js (VERSI AUTO-TRIGGER & ANTI-BENTROK)
    Mencakup: Loading, Navigasi Mobile, & Search Gabungan
    ============================================================ */
 
